@@ -1,0 +1,90 @@
+import React, { useState } from "react";
+
+const facilities = [
+  // Environment
+  "Wood Hall", "Dirt Path", "Sidewalk", "Grass", "Panel Hall", "Stone Path",
+  "Pine", "Bamboo", "Big Rock", "Cherry Tree", "Palm Tree", "Hydrangeas",
+  "Tulips", "Sunflowers", "Bonsai Tree", "Maple Tree", "Potted Plant",
+
+  // Basic Facilities
+  "Classroom", "Club Room", "Student Council Room", "Library", "Book Shelf",
+  "Music Room", "Art Room", "Science Room", "Social Studies Room",
+  "Computer Lab", "Infirmary", "Cafeteria", "Gym", "Track Field",
+  "Swimming Pool", "Observatory",
+
+  // Interactive Facilities
+  "Bench", "Trash Can", "Vending Machine", "Statue", "Globe",
+  "Arcade", "Snack Store", "Planetarium", "Dojo", "Trampoline",
+  "Water Pump", "Instrument Shelter", "Bulletin Board",
+
+  // Sports Fields
+  "Basketball Court", "Tennis Court", "Soccer Field", "Baseball Field",
+
+  // Misc
+  "Lab", "Training Room"
+];
+
+const combos = [
+  { name: "Classroom + Bench", items: ["Classroom", "Bench"] },
+  { name: "Classroom + Trash Can", items: ["Classroom", "Trash Can"] },
+  { name: "Library + Bonsai Tree", items: ["Library", "Bonsai Tree"] },
+  { name: "Social Studies Room + Globe", items: ["Social Studies Room", "Globe"] },
+  { name: "Art Room + Statue", items: ["Art Room", "Statue"] },
+  { name: "Music Room + Maple Tree", items: ["Music Room", "Maple Tree"] },
+  { name: "Science Room + Potted Plant", items: ["Science Room", "Potted Plant"] },
+  { name: "Book Shelf + Potted Plant", items: ["Book Shelf", "Potted Plant"] },
+  { name: "Gym + Vending Machine", items: ["Gym", "Vending Machine"] },
+  { name: "Computer Lab + Trash Can", items: ["Computer Lab", "Trash Can"] },
+  { name: "Arcade + Club Room", items: ["Arcade", "Club Room"] }
+];
+
+function ComboFinder() {
+  const [selected, setSelected] = useState([]);
+
+  const toggleFacility = (facility) => {
+    setSelected((prev) =>
+      prev.includes(facility)
+        ? prev.filter((f) => f !== facility)
+        : [...prev, facility]
+    );
+  };
+
+  const availableCombos = combos.filter((combo) =>
+    combo.items.every((item) => selected.includes(item))
+  );
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>Pocket Academy 3 Combo Spot Finder</h1>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px', marginTop: '20px' }}>
+        {facilities.map((facility) => (
+          <label key={facility} style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="checkbox"
+              checked={selected.includes(facility)}
+              onChange={() => toggleFacility(facility)}
+              style={{ marginRight: '8px' }}
+            />
+            {facility}
+          </label>
+        ))}
+      </div>
+
+      <div style={{ marginTop: '30px' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: 'bold' }}>Available Combo Spots</h2>
+        {availableCombos.length === 0 ? (
+          <p style={{ color: '#555' }}>No combos available with current facilities.</p>
+        ) : (
+          <ul style={{ marginTop: '10px' }}>
+            {availableCombos.map((combo) => (
+              <li key={combo.name}>{combo.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default ComboFinder;
